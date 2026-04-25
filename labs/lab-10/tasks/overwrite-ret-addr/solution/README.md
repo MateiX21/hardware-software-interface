@@ -22,7 +22,7 @@ First use this command to scan the executable:
 - So we must print `96 + 8 = 104` dummy characters `A` and then the address of `magic_function()` in little-endian encoding
 
 ```console
-student@hsi:/.../overwrite-ret-addr/support$ nm break_this | grep magic_function
+student@hsi:~/.../tasks/overwrite-ret-addr/support$ nm break_this | grep magic_function
 080491d6 T magic_function
 ```
 
