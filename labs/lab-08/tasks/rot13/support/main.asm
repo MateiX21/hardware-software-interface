@@ -1,0 +1,27 @@
+section .data
+    mystring db "lorem", 0, "ipsum", 0, "dolor", 0
+    length   dq ($ - mystring)
+
+    after_fmt  db "After: '%s'", 10, 0
+
+section .text
+extern printf
+extern rot13
+global main
+
+main:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, [length]
+
+    mov rdi, mystring
+    mov rsi, rax
+    call rot13
+
+    mov rdi, after_fmt
+    mov rsi, mystring
+    call printf
+
+    leave
+    ret
