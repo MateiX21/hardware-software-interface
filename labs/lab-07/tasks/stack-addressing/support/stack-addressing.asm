@@ -9,33 +9,61 @@ global main
 main:
     mov rbp, rsp
 
-    ; TODO 1: replace every "push" instruction by an equivalent sequence of commands (use direct addressing of memory. Hint: rsp)
     mov rcx, NUM
-push_nums:
-    push rcx
-    loop push_nums
+init_nums:
+    sub rsp, 8
+    mov [rsp], rcx
+    loop init_nums
 
-    push 0
+    sub rsp, 8
+    mov qword [rsp], 0
+
     mov rax, "handsome"
-    push rax
+    sub rsp, 8
+    mov [rsp], rax
     mov rax, "is very "
-    push rax
+    sub rsp, 8
+    mov [rsp], rax
     mov rax, "Anthony "
-    push rax
+    sub rsp, 8
+    mov [rsp], rax
 
     lea rsi, [rsp]
     PRINTF64 `%s\n\x0`, rsi
 
-    ; TODO 2: print the stack in "address: value" format in the range of [RSP:RBP]
-    ; use PRINTF64 macro - see format above
+    mov rbx, rbp
+dump_loop:
+    mov rdx, [rbx]
+    PRINTF64 `0x%lx: 0x%lx\n\x0`, rbx, rdx
+    sub rbx, 8
+    cmp rbx, rsp
+    jae dump_loop
 
-    ; TODO 3: print the string
+    mov rbx, rsp
+str_loop:
+    movzx rdx, byte [rbx]
+    test dl, dl
+    jz str_done
+    PRINTF64 `%c\x0`, rdx
+    inc rbx
+    jmp str_loop
+str_done:
+    PRINTF64 `\n\x0`
 
-    ; TODO 4: print the array on the stack, element by element.
+    mov rbx, rbp
+    sub rbx, 8 * NUM
+    mov rdx, [rbx]
+    PRINTF64 `%ld\x0`, rdx
+    add rbx, 8
+    mov rcx, NUM - 1
+arr_loop:
+    mov rdx, [rbx]
+    PRINTF64 ` %ld\x0`, rdx
+    add rbx, 8
+    loop arr_loop
+    PRINTF64 `\n\x0`
 
-    ; restore the previous value of the rbp (Base Pointer)
     mov rsp, rbp
 
-    ; exit without errors
     xor rax, rax
     ret
