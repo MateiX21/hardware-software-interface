@@ -14,8 +14,35 @@ global main
 main:
     push rbp
     mov rbp, rsp
+    push rbx
+    sub rsp, 8
 
-    ; TODO: Print the start indices for all occurrences of the substring in source_text
-
+    xor rbx, rbx
+.outer:
+    mov al, [source_text + rbx]
+    test al, al
+    jz .done
+    xor r8, r8
+.inner:
+    mov dl, [substring + r8]
+    test dl, dl
+    jz .match
+    mov al, [source_text + rbx + r8]
+    cmp al, dl
+    jne .next
+    inc r8
+    jmp .inner
+.match:
+    mov rsi, rbx
+    mov rdi, print_format
+    xor eax, eax
+    call printf
+.next:
+    inc rbx
+    jmp .outer
+.done:
+    add rsp, 8
+    pop rbx
+    xor eax, eax
     leave
     ret

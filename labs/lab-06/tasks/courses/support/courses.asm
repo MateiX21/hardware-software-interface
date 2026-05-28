@@ -20,6 +20,7 @@ section .bss
 
 section .data
     unassigned:		db "Student unassigned :(", 0
+    fmt_student:	db "%s ---- %s", 10, 0
 	v_students_count:    dq 5
     v_courses_count:    dq 3
 
@@ -76,7 +77,36 @@ global main
 main:
 	push rbp
 	mov rbp, rsp
+	push rbx
+	push r12
 	PRINTF64 `The students list is:\n\x0`
-	; TODO: Print the list of students and the courses where they are assigned
+
+	mov rbx, students
+	mov r12, [v_students_count]
+.loop:
+	test r12, r12
+	jz .done
+
+	cmp dword [rbx + check], 0
+	je .unassigned
+
+	mov rax, [rbx + id_course]
+	imul rax, rax, course_t_size
+	lea rdx, [courses + name_course + rax]
+	jmp .print
+.unassigned:
+	mov rdx, unassigned
+.print:
+	mov rsi, rbx
+	mov rdi, fmt_student
+	xor eax, eax
+	call printf
+
+	add rbx, student_t_size
+	dec r12
+	jmp .loop
+.done:
+	pop r12
+	pop rbx
     leave
     ret
