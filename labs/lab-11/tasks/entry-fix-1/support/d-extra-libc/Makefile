@@ -9,8 +9,12 @@ ASFLAGS = -f elf64
 
 all: hello
 
+# Derive the libgcc directory from the installed compiler instead of
+# hardcoding a gcc version that may not exist on this machine.
+LIBGCC_DIR = $(dir $(shell $(CC) -print-libgcc-file-name))
+
 hello: hello.o start.o
-	ld -static -m elf_x86_64 -L/usr/lib/gcc/x86_64-linux-gnu/13 -o $@ $^ /usr/lib/x86_64-linux-gnu/crti.o --start-group -lc -lgcc -lgcc_eh --end-group /usr/lib/x86_64-linux-gnu/crtn.o
+	ld -static -m elf_x86_64 -L$(LIBGCC_DIR) -o $@ $^ /usr/lib/x86_64-linux-gnu/crti.o --start-group -lc -lgcc -lgcc_eh --end-group /usr/lib/x86_64-linux-gnu/crtn.o
 
 hello.o: hello.c
 

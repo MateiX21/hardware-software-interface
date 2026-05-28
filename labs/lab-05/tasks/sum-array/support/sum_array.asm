@@ -30,13 +30,40 @@ add_byte_array_element:
 
     PRINTF64 `Byte array sum: %u\n\x0`, rax
 
-    ; TODO Compute sum for elements in word_array
+    ; Word array sum (16-bit elements, size 2)
+    mov rcx, ARRAY_SIZE
+    xor rax, rax
+add_word_array_element:
+    movzx rdx, word [word_array + rcx*2 - 2]
+    add rax, rdx
+    loop add_word_array_element
+    PRINTF64 `Word array sum: %u\n\x0`, rax
 
-    ; TODO Compute sum for elements in dword_array
+    ; Dword array sum (32-bit elements, size 4)
+    mov rcx, ARRAY_SIZE
+    xor rax, rax
+add_dword_array_element:
+    mov edx, dword [dword_array + rcx*4 - 4]   ; writing edx zeroes upper rdx
+    add rax, rdx
+    loop add_dword_array_element
+    PRINTF64 `Dword array sum: %u\n\x0`, rax
 
-    ; TODO Compute sum for elements in qword_array
+    ; Qword array sum (64-bit elements, size 8)
+    mov rcx, ARRAY_SIZE
+    xor rax, rax
+add_qword_array_element:
+    add rax, qword [qword_array + rcx*8 - 8]
+    loop add_qword_array_element
+    PRINTF64 `Qword array sum: %lu\n\x0`, rax
 
-    ; TODO Compute sum for elements in big_qword_array
+    ; 128-bit addition: rdx:rax accumulates the carry past 64 bits
+    xor rdx, rdx
+    mov rax, qword [big_qword_array]
+    add rax, qword [big_qword_array + 8]
+    adc rdx, 0
+    add rax, qword [big_qword_array + 16]
+    adc rdx, 0
+    PRINTF64 `128-bit addition example: 0x%lx%016lx\n\x0`, rdx, rax
 
     leave
     ret

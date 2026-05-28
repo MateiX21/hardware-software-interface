@@ -40,6 +40,14 @@ main:
     ; birth_year is 1993
     ; age is 22
     ; group is '323CA'
+    mov al,22
+    mov [sample_student+age],al
+    mov al,'3'
+    mov [sample_student+group+2],al
+
+    mov ax,1993
+    mov [sample_student+birth_year],ax
+
 
     lea rsi, [sample_student + name]
     mov rdi, format_name

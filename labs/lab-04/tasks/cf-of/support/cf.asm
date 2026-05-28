@@ -13,7 +13,8 @@ main:
     mov al, 0xFF
     PRINTF64 `the Carry Flag is not active\n\x0`
     test al, al
-    ;TODO: activate the Carry Flag
+    ; 0xFF + 1 = 0x100 -> unsigned carry out of the byte, CF = 1
+    add al, 1
 
     jc carry_flag
     jmp end

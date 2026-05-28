@@ -8,6 +8,18 @@
 
 void mirror(char *s)
 {
-	/* TODO */
-	(void) s;
+	char *end, tmp;
+
+	end = s;
+	while (*end)
+		++end;
+	--end;
+
+	while (s < end) {
+		tmp = *s;
+		*s = *end;
+		*end = tmp;
+		++s;
+		--end;
+	}
 }

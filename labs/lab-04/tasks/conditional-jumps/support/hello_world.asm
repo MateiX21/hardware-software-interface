@@ -4,6 +4,7 @@
 
 section .data
     myString: db "Hello, World!", 0
+    byeString: db "Goodbye, World!", 0
     N: dq 6                         ; N = 6
 
 section .text
@@ -20,16 +21,23 @@ main:
     mov rax, 2
     mov r8, 1
     cmp rax, r8
-    je print                        ; TODO1: rax > r8?
+    jg print                        ; TODO1: print only if rax > r8
     xor rax, rax
 
     leave
     ret
 
 print:
+    ; rcx still holds N (PRINTF64 preserves all caller-saved regs)
+    test rcx, rcx
+    jz goodbye                      ; nothing to print for N == 0
+hello_loop:
     PRINTF64 `%s\n\x0`, myString
-                                    ; TODO2.2: print "Hello, World!" N times
-                                    ; TODO2.1: print "Goodbye, World!"
+    dec rcx
+    jnz hello_loop
+
+goodbye:
+    PRINTF64 `%s\n\x0`, byeString
     xor rax, rax
 
     leave

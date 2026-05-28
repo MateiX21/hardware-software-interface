@@ -14,24 +14,26 @@ main:
     push rbp
     mov rbp, rsp
 
-    mov rax, 0xdeadc0de         ; TODO3.1: modify rax register
-    mov rbx, 0x1337ca5e         ; TODO3.1: modify rbx register
+    mov rax, 2                  ; rax < rbx (signed) -> jns not taken
+    mov rbx, 3                  ; rbx <= rcx (unsigned) -> jb not taken
     mov rcx, 0x5                ; hardcoded; DO NOT change
     cmp rax, rbx
     jns bad
     cmp rcx, rbx
     jb bad
-    add rax, rbx
-    xor rax, rcx
+    add rax, rbx                ; rax + rbx = 5
+    xor rax, rcx                ; 5 ^ 5 = 0 -> jnz not taken
     jnz bad
 
 good:
     PRINTF64 `%s\n\x0`, right
     xor rax, rax
+    jmp done                    ; skip the wrong message
 
 bad:
     PRINTF64 `%s\n\x0`, wrong
     xor rax, rax
 
+done:
     leave
     ret

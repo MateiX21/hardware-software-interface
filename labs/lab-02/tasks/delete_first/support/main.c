@@ -7,11 +7,12 @@
 
 int main(void)
 {
-	/**
-	 * TODO: Is the declaration of the s variable correct considering that
-	 * we're calling the delete_first function on it? Why? Modify if necessary.
+	/*
+	 * s must be a writable array, not a pointer to a string literal:
+	 * delete_first modifies the string in place, and literals live in
+	 * read-only memory (writing to them crashes).
 	 */
-	char *s = "She sells seashells by the seashore";
+	char s[] = "She sells seashells by the seashore";
 	char *pattern = "se";
 
 	(void) s;
