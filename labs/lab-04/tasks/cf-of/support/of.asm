@@ -13,7 +13,8 @@ main:
     mov al, 0x7F
     PRINTF64 `the Overflow Flag is not active\n\x0`
     test al, al
-    ;TODO: activate the Overflow Flag
+    ; 0x7F + 1 = 0x80: signed 127 + 1 doesn't fit in a byte, OF = 1
+    add al, 1
 
     jo overflow_flag
     jmp end

@@ -28,8 +28,27 @@ main:
 
     ; Print result in hexa
     PRINTF64 `Result is: 0x%hx\n\x0`, rax
-
+    xor rdx,rdx
+    mov ax,word[num1_w]
+    mov bx,word[num2_w]
+    mul bx
+    shl edx,16
+    mov dx,ax
+    PRINTF64 `Result is: 0x%x\n\x0`, rdx
     ; TODO: Implement multiplication for dw, dd and dq data types.
 
+    xor rdx,rdx
+    mov eax,dword[num1_d]
+    mov ebx,dword[num2_d]
+    mul ebx
+    shl rdx,32
+    or rdx,rax
+    PRINTF64 `Result is: 0x%llx\n\x0`, rdx
+
+    xor rdx,rdx
+    mov rax,qword[num1_q]
+    mov rbx,qword[num2_q]
+    mul rbx
+    PRINTF64 `Results is: 0x%llx%llx\n\x0`,rdx,rax
     leave
     ret

@@ -6,14 +6,14 @@
 
 void rotate_left(unsigned int *number, int bits)
 {
-	/* TODO */
-	(void) number;
-	(void) bits;
+	bits &= 31;
+	if (bits)
+		*number = (*number << bits) | (*number >> (32 - bits));
 }
 
 void rotate_right(unsigned int *number, int bits)
 {
-	/* TODO */
-	(void) number;
-	(void) bits;
+	bits &= 31;
+	if (bits)
+		*number = (*number >> bits) | (*number << (32 - bits));
 }

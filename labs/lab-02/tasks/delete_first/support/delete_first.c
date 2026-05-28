@@ -8,12 +8,25 @@
 
 char *delete_first(char *s, char *pattern)
 {
-	/**
-	 * TODO: Implement this function
-	 */
+	char *p, *q, *r;
 
-	(void) s;
-	(void) pattern;
+	if (!*pattern)
+		return s;
 
-	return NULL;
+	for (p = s; *p; ++p) {
+		q = p;
+		r = pattern;
+		while (*r && *q == *r) {
+			++q;
+			++r;
+		}
+		if (!*r) {
+			while (*q)
+				*p++ = *q++;
+			*p = '\0';
+			break;
+		}
+	}
+
+	return s;
 }

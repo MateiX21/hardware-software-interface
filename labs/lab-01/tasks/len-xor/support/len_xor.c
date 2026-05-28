@@ -6,23 +6,36 @@
 
 #include "len_xor.h"
 
+char *new_string(const char *cont_str)
+{
+	char *res;
+
+	res = calloc(STR_SIZE, sizeof(char));
+	strcpy(res, cont_str);
+
+	return res;
+}
+
 int my_strlen(const char *str)
 {
-	/* TODO */
+	int res;
 
-	/**
-	 * The cast to (void) is used to avoid a compiler warning. Remove the line
-	 * below to find out what the warning is.
-	 *
-	 * Remove this cast when implementing the function.
-	 */
-	(void) str;
+	for (res = 0; *str; ++str)
+		++res;
 
-	return -1;
+	return res;
 }
 
 void equality_check(const char *str)
 {
-	/* TODO */
-	(void) str;
+	int i, n;
+	char curr_char, check_char;
+
+	n = my_strlen(str);
+	for (i = 0; i < n; ++i) {
+		curr_char = *(str + i);
+		check_char = *(str + ((i + (1 << i)) % n));
+		if (!(curr_char ^ check_char))
+			printf("Address of %c: %p\n", curr_char, str + i);
+	}
 }

@@ -48,7 +48,9 @@ fill_byte:
     cmp rcx, 64
     jl fill_byte
 
-    ; TODO 3: Print "DEADBEEF" instead of "CAFEBABE"
+    ; TODO 3: overwrite the local variable (rbx + 64 == rbp - 8) with
+    ; 0xDEADBEEF through the buffer base in rbx, not the variable directly.
+    mov dword [rbx + 64], 0xDEADBEEF
 
     ; Text before printing buffer.
     mov rdi, buffer_intro_message
@@ -73,10 +75,9 @@ print_byte:
     pop rcx                ; restore rcx
     inc rcx
 
-    ; TODO 1: Print the next bytes 4
-    ; TODO 2: After printing the local variable,
-    ; print the next 8 bytes (What contain the next 8 bytes?)
-    cmp ecx, 64
+    ; TODO 1 + TODO 2: read past the 64-byte buffer to leak the 4-byte local
+    ; variable and the following 8 bytes (saved rbp), 64 + 4 + 8 = 76 bytes.
+    cmp ecx, 76
     jl print_byte
 
     ; Print new line. C equivalent instruction is puts("").

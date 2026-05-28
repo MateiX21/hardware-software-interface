@@ -13,7 +13,9 @@ main:
     mov al, 128
     PRINTF64 `the Carry Flag and the Overflow Flag are not active\n\x0`
     test al, al
-    ;TODO: activate the Carry Flag and the Overflow Flag
+    ; 128 + 128 = 256: unsigned carry (CF) and signed overflow of two
+    ; negatives (OF), so both flags become active
+    add al, 128
 
     jc cf_on
     jmp end

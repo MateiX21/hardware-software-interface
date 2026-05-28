@@ -22,7 +22,11 @@ main:
     PRINTF64 `%d\n\x0`, r10 ; print the second number
                             ; DO NOT REMOVE/MODIFY THIS LINE
 
-    ; TODO: find the minimum of the two numbers and store it in r9
+    ; if r9 already holds the smaller value keep it, otherwise swap them
+    cmp r9, r10
+    jl skip_swap
+    xchg r9, r10
+skip_swap:
     PRINTF64 `%d\n\x0`, r9 ; print the minimum
     xor rax, rax
 
